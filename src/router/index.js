@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/login'
 import Home from '@/components/home'
+import User from '@/components/user'
 
 Vue.use(Router)
 
@@ -9,7 +10,15 @@ const router= new Router ({
   routes: [
     { path: '/', redirect: '/login' },
     { path: '/login', component: Login },
-    { path: '/home', component: Home }
+    { path: '/home', component: Home,
+    // 配置嵌套user路由
+      children: [
+        {
+          path: '/user',
+          component: User
+        }
+      ]
+    }
   ]
 })
 // 设置路由守卫
