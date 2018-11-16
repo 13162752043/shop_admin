@@ -8,7 +8,7 @@
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" type="password"></el-input>
+        <el-input v-model="form.password" type="password" @keyup.enter.native="submit"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit">登录</el-button>
@@ -19,8 +19,6 @@
 </template>
 
 <script>
-// 引入axios
-import axios from 'axios'
 // shift + tab : 往前按了一下tab
 export default {
   data () {
@@ -47,32 +45,27 @@ export default {
       this.$refs.form.resetFields()
     },
     submit () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
           // 登录成功发送ajax请求,如果成功跳转到登录页
-          axios({
-            url:'http://localhost:8888/api/private/v1/login',
+          let res = await this.axios({
+            url: 'http://localhost:8888/api/private/v1/login',
             method: 'post',
             data: this.form
-          }).then(res=>{
-            if(res.data.meta.status==200){
-              // 提示信息
-              this.$message({
-              message: '登录成功',
-              type: 'success'
-              })
-              // 把token存入localstorage
-              localStorage.setItem('token', res.data.data.token)
-              // 跳转页面
-              this.$router.push('/home')
-            }
           })
+          if (res.meta.status === 200) {
+            // 提示信息
+            this.$message.success('登录成功')
+            // 把token存入localstorage
+            localStorage.setItem('token', res.data.token)
+            // 跳转页面
+            this.$router.push('/home')
+          }
         } else {
-          this.$message('登录失败')
-          return false
+          this.$message.error('登录失败')
         }
       })
-    },
+    }
   }
 }
 </script>
@@ -108,5 +101,4 @@ export default {
     }
   }
 }
- 
 </style>
