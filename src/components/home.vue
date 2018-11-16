@@ -14,7 +14,7 @@
           <el-row class="tac">
             <el-col :span="12">
              <el-menu
-                :default-active="$route.path.slice(1)"
+                :default-active="$route.path.slice(1).split('-')[0]"
                 class="el-menu-vertical-demo"
                 @open="handleOpen"
                 @close="handleClose"

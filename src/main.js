@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import moment from 'moment'
 // 导入 ElementUI组件库
 import ElementUI from 'element-ui'
 // 导入ElementUI的样式
@@ -10,6 +11,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 引入公共样式
 import './assets/css/common.css'
 
+import VueQuillEditor from 'vue-quill-editor'
+// 引入css样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor)
 import ElTreeGrid from 'element-tree-grid'
 // 注册一个全局的组件
 // el-table-tree-column
@@ -17,6 +24,10 @@ import ElTreeGrid from 'element-tree-grid'
 Vue.component(ElTreeGrid.name, ElTreeGrid)
 // 使用elementUI这个插件
 Vue.use(ElementUI)
+// 定义全局过滤器
+Vue.filter('dateFilter', (input, format = 'YYYY-MM-DD HH:mm:ss') => {
+  return moment(input * 1000).format(format)
+})
 // 1、把axios绑定在vue实例上
 import axios from 'axios'
 Vue.prototype.axios = axios
